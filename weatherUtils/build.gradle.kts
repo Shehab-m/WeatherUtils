@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id ("maven-publish")
+    `maven-publish`
 }
 
 android {
@@ -24,17 +24,34 @@ android {
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
-dependencies {
+project.afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                groupId = "com.vodafone.shehab"
+                artifactId = "weatherUtils"
+                version = "1.0.0"
 
+                from(components["release"])
+
+            }
+        }
+    }
+}
+
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.21")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
